@@ -1,0 +1,13 @@
+name: dwds_livestream
+services:
+  server:
+    image: docker.zdl.org/zdl/dwds-livestream:latest
+    build:
+      context: .
+    network_mode: host
+    environment:
+      - "DWDS_LIVESTREAM_ACCESS_LOG=/log/access.log"
+      - "DWDS_LIVESTREAM_WBDB_USER=${DWDS_LIVESTREAM_WBDB_USER:-dwdswb}"
+      - "DWDS_LIVESTREAM_WBDB_PASSWORD=${DWDS_LIVESTREAM_WBDB_PASSWORD:-dwdswb}"
+    volumes:
+      - ./data:/log

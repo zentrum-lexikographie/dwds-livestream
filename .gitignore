@@ -1,0 +1,11 @@
+.cpcache/
+.nrepl-port
+.shadow-cljs/
+
+.env
+data/
+public/js
+public/styles.css
+node_modules/
+
+*.temp
