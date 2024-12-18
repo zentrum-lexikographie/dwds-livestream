@@ -15,6 +15,9 @@
 (def display-parallel
   7)
 
+(def show-sources?
+  (str/includes? (.-search js/location) "?sources"))
+
 (def wb-page-requests-xf
   (comp
    (filter :article-type)
@@ -136,12 +139,13 @@
             (append "tspan")
             (classed "lemma" true)
             (text lemma))
-        (.. label
-            (append "tspan")
-            (classed "source" true)
-            (attr "x" "0")
-            (attr "dy" "1.2em")
-            (text (desc entry)))))))
+        (when show-sources?
+          (.. label
+              (append "tspan")
+              (classed "source" true)
+              (attr "x" "0")
+              (attr "dy" "1.2em")
+              (text (desc entry))))))))
 
 (def start-rendering!
   (partial listen-to-page-requests render-page-request))
