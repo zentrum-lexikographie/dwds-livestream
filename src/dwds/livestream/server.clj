@@ -240,7 +240,10 @@
 
 (defn handle-stream
   [stream-generator content-type req]
-  (-> (resp/response (stream-generator req)) (resp/content-type content-type)))
+  (-> (resp/response (stream-generator req))
+      (resp/content-type content-type)
+      (resp/header "Cache-Control" "no-cache")
+      (resp/header "X-Accel-Buffering" "no")))
 
 (defn stream-handler
   [k generator content-type]
