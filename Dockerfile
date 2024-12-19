@@ -22,4 +22,4 @@ COPY ./ .
 
 COPY --from=builder /build/public/js ./public/js
 
-ENTRYPOINT ["clojure", "-X",  "dwds.livestream.server/start!"]
+ENTRYPOINT ["clojure", "-X:server",  "dwds.livestream.server/start!"]

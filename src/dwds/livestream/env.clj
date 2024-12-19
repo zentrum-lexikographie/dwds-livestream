@@ -33,6 +33,10 @@
    :user     (get-env "DWDS_LIVESTREAM_WBDB_USER" "dwdswb")
    :password (get-env "DWDS_LIVESTREAM_WBDB_PASSWORD" "dwdswb")})
 
+(def collector-source-url
+  (get-env "DWDS_LIVESTREAM_COLLECTOR_SOURCE_URL"
+           "http://www.dwds.de:3000/livestream/api/jsonl"))
+
 (log/handle-uncaught-jvm-exceptions!)
 (log/merge-config!
  {:min-level [["org.eclipse.jetty.*" :warn]
