@@ -150,7 +150,17 @@
 (def start-rendering!
   (partial listen-to-page-requests render-page-request))
 
+(defn register-visibility-listener!
+  []
+  (js/document.addEventListener
+   "visibilitychange"
+   (fn []
+     (if (.-hidden js/document)
+       (stop-event-retrieval!)
+       (start-event-retrieval!)))))
+
 (defn ^:dev/after-load start!
   []
+  (register-visibility-listener!)
   (start-rendering!)
   (start-event-retrieval!))
