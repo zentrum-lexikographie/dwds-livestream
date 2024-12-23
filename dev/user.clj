@@ -1,16 +1,36 @@
 (ns user
   (:require
    [clojure.tools.namespace.repl :as repl :refer [set-refresh-dirs]]
-   [dwds.livestream.server :as server]))
+   [dwds.livestream.http :as http]
+   [clojure.core.async :as a]
+   [clojure.java.io :as io]
+   [taoensso.timbre :as log]
+   [jsonista.core :as json])
+  (:import
+   (java.util.zip GZIPInputStream)))
 
 (set-refresh-dirs "dev" "src")
 
+(defn stream-sample-wb-page-requests
+  [ch]
+  (a/thread
+    (try
+      (with-open [r (->> (io/resource "wb-page-requests.edn.gz")
+                         (io/input-stream) GZIPInputStream. (io/reader))]
+        (loop [lines (cycle (line-seq r))]
+          (when-let [line (first lines)]
+            (when (a/>!! ch (json/write-value-as-string (read-string line)))
+              (Thread/sleep 1000)
+              (recur (rest lines))))))
+      (catch Throwable t
+        (log/fatal t "Error while streaming sample page requests")))))
+
 (defn start!
   []
-  (let [stop-metrics-reporter! (server/start-metrics-reporter!)
-        stop-tailer!           (server/start-tailer!)
-        stop-server!           (server/start-server!)]
-    (fn [] (stop-server!) (stop-tailer!) (stop-metrics-reporter!))))
+  (let [ch           (a/chan)
+        stop-server! (http/start-server! (a/mult ch))]
+    (stream-sample-wb-page-requests ch)
+    (fn [] (a/close! ch) (stop-server!))))
 
 (def stop!
   nil)

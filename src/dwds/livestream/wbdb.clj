@@ -1,10 +1,12 @@
 (ns dwds.livestream.wbdb
   (:require
    [chime.core :as chime]
+   [dwds.livestream.access-log :as al]
    [dwds.livestream.env :as env]
    [next.jdbc :as jdbc]
    [next.jdbc.result-set :as jdbc.results]
-   [taoensso.timbre :as log])
+   [taoensso.timbre :as log]
+   [clojure.java.io :as io])
   (:import
    (java.time Duration Instant LocalDateTime ZonedDateTime ZoneId)
    (java.time.temporal ChronoUnit)))
