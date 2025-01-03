@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.2.0...v1.3.0) (2025-01-03)
+
+
+### Features
+
+* Add collector module, persisting events to PostgreSQL ([f42623d](https://github.com/zentrum-lexikographie/dwds-livestream/commit/f42623d438acccfd9fb818c3c3364d7ea0eb975e))
+* **Visualization:** Pause data retrieval on visibility change ([5cf45b5](https://github.com/zentrum-lexikographie/dwds-livestream/commit/5cf45b59d9acc4dc68c1479e9478fd3b94490adf))
+
 ## [1.2.0](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.1.0...v1.2.0) (2024-12-18)
 
 
