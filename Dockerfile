@@ -16,7 +16,7 @@ WORKDIR /service
 
 COPY deps.edn .
 
-RUN clojure -P
+RUN clojure -A:server:collector -P
 
 COPY ./ .
 
