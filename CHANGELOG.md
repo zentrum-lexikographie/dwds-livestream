@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.1](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.3.0...v1.3.1) (2025-01-03)
+
+
+### Bug Fixes
+
+* **Docker Build:** Download dependencies for server and collector mode ([20fc160](https://github.com/zentrum-lexikographie/dwds-livestream/commit/20fc160fdba1014f28f261d35311af03d0b91c23))
+* **Server:** Access log tailer was initialized with path of wrong type ([041c08c](https://github.com/zentrum-lexikographie/dwds-livestream/commit/041c08c2a80a4b062af41c7821db15efb6184b57))
+
 ## [1.3.0](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.2.0...v1.3.0) (2025-01-03)
 
 
