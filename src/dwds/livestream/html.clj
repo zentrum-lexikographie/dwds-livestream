@@ -23,21 +23,25 @@
     [:tspan.lemma :font-bold :text-xl]
     [:tspan.source :fill-dwds-grey-1]]
    [:header :absolute :top-0 :left-0 :p-4]
-   [:footer :absolute :bottom-0 :left-0 :p-4
-    [:p.network-error :w-fit :text-dwds-white :font-bold]]]
+   [:footer :text-dwds-white
+    [:p.info :absolute :bottom-0 :left-0 :p-6 :text-4xl :hidden]
+    [:p.network-error :absolute :bottom-0 :right-0 :p-6 :w-fit :font-bold]]]
   ([page-title & contents]
    [:<> {:lang "de"}
     [:head
      [:meta {:charset "UTF-8"}]
      [:meta {:name "viewport", :content "width=device-width, initial-scale=1.0"}]
      [:link {:rel "stylesheet" :href (str cp "fonts.css")}]
+     [:link {:rel "stylesheet" :href (str cp "fontawesome.min.css")}]
      [:link {:rel "stylesheet" :href (str cp "styles.css")}]
      [:title (str title " – " page-title)]]
     [:body
      [:header [:a {:href "https://www.dwds.de/"} [:img {:src (str cp "d.png")}]]]
-     [:footer [:p.network-error {:style "display: none"}
-               "Verbindung unterbrochen! Lade in Kürze neu…"]]
      [:main contents]
+     [:footer
+      [:p.info [:a {:href ""} [:i.fa-solid.fa-question]]]
+      [:p.network-error {:style "display: none"}
+       "Verbindung unterbrochen! Lade in Kürze neu…"]]
      [:script (str "var cp = \"" cp "\";")]
      [:script {:src (str cp "js/main.js")}]]]))
 
