@@ -100,9 +100,9 @@
 
 (defn start-tailer!
   [ch]
-  (let [access-log (str env/access-log)]
-    (->> (Tailer/create
-          access-log
+  (->> (Tailer/create
+        env/access-log
+        (let [access-log (str env/access-log)]
           (proxy [TailerListenerAdapter] []
             (handle [event]
               (if (instance? Throwable event)
@@ -119,8 +119,8 @@
             (fileNotFound []
               (log/debugf "File not found: %s" access-log))
             (fileRotated []
-              (log/debugf "Rotated: %s" access-log)))
-          1000
-          true)
-         (partial #(.stop ^Tailer %)))))
+              (log/debugf "Rotated: %s" access-log))))
+        1000
+        true)
+       (partial #(.stop ^Tailer %))))
 
