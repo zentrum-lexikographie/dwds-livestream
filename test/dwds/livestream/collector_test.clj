@@ -28,9 +28,9 @@
       (get :cnt)))
 
 (deftest db-setup
-  (with-open [container (postgres-container)
-              db        (collector/get-db-connection (container->db-spec container))]
-    (let [_     (collector/init-db! db)
-          wait! (collector/collect! db :limit testset-limit)]
+  (with-open [container (postgres-container)]
+    (let [db    (container->db-spec container)
+          _     (collector/init-db! db)
+          wait! (collector/start-collector! db :limit testset-limit)]
       (wait!)
       (is (= testset-limit (count-wb-page-requests db))))))

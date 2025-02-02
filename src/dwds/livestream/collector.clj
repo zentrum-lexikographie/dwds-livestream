@@ -72,9 +72,11 @@
 
 (defn event->db
   [{:keys [timestamp lemma hidx article-type source date]}]
-  (let [timestamp (Instant/parse timestamp )
+  (let [lemma     (cond-> lemma hidx (str "#" hidx))
+        timestamp (Instant/parse timestamp )
         date      (some-> date (LocalDate/parse))]
-    [timestamp (cond-> lemma hidx (str "#" hidx)) article-type source date]))
+    (when (< (count lemma) 128)
+      (list [timestamp lemma article-type source date]))))
 
 (defn log-retried-write
   [_v e]
@@ -90,7 +92,7 @@
   [db ch]
   (a/thread
     (try
-      (let [batches (a/chan 1 (comp (map event->db) (partition-all batch-size)))]
+      (let [batches (a/chan 1 (comp (mapcat event->db) (partition-all batch-size)))]
         (a/pipe ch batches)
         (dh/with-retry {:retry-on   SQLException
                         :backoff-ms [1000 20000 2.0]
