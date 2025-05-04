@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.3.2...v1.3.3) (2025-05-04)
+
+
+### Bug Fixes
+
+* **Collector:** retry collection when event stream is exhausted/closed ([22eaadd](https://github.com/zentrum-lexikographie/dwds-livestream/commit/22eaaddf822499e719d41beb3745ad8c270ba0ec))
+
 ## [1.3.2](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.3.1...v1.3.2) (2025-02-02)
 
 
