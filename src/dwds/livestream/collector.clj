@@ -53,12 +53,17 @@
       (dh/with-retry {:retry-on   IOException
                       :backoff-ms [3000 60000 2.0]
                       :on-retry   log-retried-retrieval}
-        (with-open [r (io/reader (get-event-stream))]
-          (loop [events (cond->> (line-seq r) limit (take limit))]
-            (when-let [event (first events)]
-              (when (a/>!! ch (parse-json event))
-                (metrics/mark! wb-page-requests)
-                (recur (rest events)))))))
+        (let [ch-closed? (atom false)]
+          (loop []
+            (with-open [r (io/reader (get-event-stream))]
+              (loop [events (cond->> (line-seq r) limit (take limit))]
+                (when-let [event (first events)]
+                  (if (a/>!! ch (parse-json event))
+                    (do (metrics/mark! wb-page-requests)
+                        (recur (rest events)))
+                    (reset! ch-closed? true)))))
+            (when-not (or limit @ch-closed?)
+              (recur)))))
       (catch Throwable t
         (log/fatal t "Error while retrieving events"))
       (finally
