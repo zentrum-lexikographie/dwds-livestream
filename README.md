@@ -31,19 +31,19 @@ offering to DWDS users.
 
 The current version of the server component is based at
 
-https://tuvok.bbaw.de/livestream/
+https://www.dwds.de/live/
 
 There are 2 endpoints for accessing the event stream:
 
-1. https://tuvok.bbaw.de/livestream/api/events , providing a
+1. https://www.dwds.de/live/api/events , providing a
    SSE-compatible data stream, and
-1. https://tuvok.bbaw.de/livestream/api/jsonl , formatting the stream as lines of JSON.
+1. https://www.dwds.de/live/api/jsonl , formatting the stream as lines of JSON.
 
 Both endpoint allow for long-polling HTTP requests and support an
 optional query parameter `epm`, specifying a rate limit as „events per
 minute”. For example
 
-https://tuvok.bbaw.de/livestream/api/jsonl?epm=30
+https://www.dwds.de/live/api/jsonl?epm=30
 
 would deliver a stream sampled at a rate of 30 events per minute.
 
@@ -51,7 +51,7 @@ would deliver a stream sampled at a rate of 30 events per minute.
 
 A sampled stream of events can be viewed on the homepage of the server:
 
-https://tuvok.bbaw.de/livestream/
+https://www.dwds.de/live/
 
 ![Livestream Screeenshot](./doc/viz.png)
 
