@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.4](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.3.3...v1.3.4) (2025-07-08)
+
+
+### Bug Fixes
+
+* Adjust collector source URL to new deployment @ www.dwds.de ([9f450c8](https://github.com/zentrum-lexikographie/dwds-livestream/commit/9f450c8a1737d5fafec71761119df56c79ef84f4))
+
 ## [1.3.3](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.3.2...v1.3.3) (2025-05-04)
 
 
