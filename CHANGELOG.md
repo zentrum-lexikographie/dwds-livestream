@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.6](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.3.5...v1.3.6) (2025-07-08)
+
+
+### Bug Fixes
+
+* handle collector errors more gracefully ([779b0d4](https://github.com/zentrum-lexikographie/dwds-livestream/commit/779b0d48e7ed8cd1dc977b2068ea77f26a5e4916))
+
 ## [1.3.5](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.3.4...v1.3.5) (2025-07-08)
 
 
