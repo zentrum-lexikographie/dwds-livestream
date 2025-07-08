@@ -18,7 +18,7 @@
   (some? (not-empty (get-env "DEBUG"))))
 
 (def http-port
-  (parse-long (get-env "DWDS_LIVESTREAM_HTTP_PORT" "3000")))
+  (parse-long (get-env "DWDS_LIVESTREAM_HTTP_PORT" "3005")))
 
 (def http-context-path
   (get-env "DWDS_LIVESTREAM_HTTP_CONTEXT_PATH" ""))
@@ -42,7 +42,7 @@
 
 (def collector-source-url
   (get-env "DWDS_LIVESTREAM_COLLECTOR_SOURCE_URL"
-           "http://www.dwds.de:3000/livestream/api/jsonl"))
+           "https://www.dwds.de/live/api/jsonl"))
 
 (defn register-shutdown-fn!
   [fn]
