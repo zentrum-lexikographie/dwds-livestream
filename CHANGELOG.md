@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.5](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.3.4...v1.3.5) (2025-07-08)
+
+
+### Bug Fixes
+
+* increase HTTP thread pool size limit ([d440ff7](https://github.com/zentrum-lexikographie/dwds-livestream/commit/d440ff7e8de69cede243dcb4ca7adf15fd340c57))
+
 ## [1.3.4](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.3.3...v1.3.4) (2025-07-08)
 
 
