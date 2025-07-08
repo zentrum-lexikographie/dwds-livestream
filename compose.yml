@@ -1,5 +1,14 @@
 name: dwds_livestream
 services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      - "POSTGRES_USER=lexdb"
+      - "POSTGRES_PASSWORD=lexdb"
+    volumes:
+      - db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
   server:
     image: docker.zdl.org/zdl/dwds-livestream:latest
     build:
@@ -11,3 +20,5 @@ services:
       - "DWDS_LIVESTREAM_WBDB_PASSWORD=${DWDS_LIVESTREAM_WBDB_PASSWORD:-dwdswb}"
     volumes:
       - ./data:/log
+volumes:
+  db:

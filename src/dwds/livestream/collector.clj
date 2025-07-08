@@ -2,10 +2,9 @@
   (:require
    [clojure.core.async :as a]
    [clojure.java.io :as io]
-   [diehard.core :as dh]
+   [com.potetm.fusebox.retry :as retry :refer [delay-exp with-retry]]
    [dwds.livestream.env :as env]
    [dwds.livestream.metrics :as metrics]
-   [clj-http.client :as hc]
    [jsonista.core :as json]
    [next.jdbc :as jdbc]
    [next.jdbc.sql :as jdbc.sql]
@@ -14,6 +13,7 @@
    [taoensso.timbre :as log])
   (:import
    (java.io IOException)
+   (java.net URL)
    (java.sql SQLException)
    (java.time Instant LocalDate)))
 
@@ -33,29 +33,33 @@
   [s]
   (json/read-value s json/keyword-keys-object-mapper))
 
-(defn log-retried-retrieval
-  [_v e]
-  (log/warnf e "Error while retrieving events: retrying"))
-
 (def wb-page-requests
   (metrics/meter "wb-page-requests"))
 
 (defn get-event-stream
   []
-  (->> {:as :stream :socket-timeout 5000}
-       (hc/get env/collector-source-url)
-       (:body)))
+  (let [conn (. (URL. env/collector-source-url) (openConnection))]
+    (doto conn
+      (. (setConnectTimeout 5000))
+      (. (setReadTimeout 5000))
+      (. (setRequestProperty "User-Agent" "dwds-livestream-collector/0.0.0")))
+    (io/reader (. conn (getInputStream)))))
+
+(def page-requests-retrieval-retry
+  (retry/init
+   {::retry/retry? (fn [_n _ms ex]
+                     (log/warnf ex "Error while retrieving events: retrying")
+                     (instance? IOException ex))
+    ::retry/delay  (fn [n _ms _ex] (min 60000 (delay-exp 3000 n)))}))
 
 (defn retrieve-page-requests
   [ch & {:keys [limit]}]
   (a/thread
     (try
-      (dh/with-retry {:retry-on   IOException
-                      :backoff-ms [3000 60000 2.0]
-                      :on-retry   log-retried-retrieval}
+      (with-retry page-requests-retrieval-retry
         (let [ch-closed? (atom false)]
           (loop []
-            (with-open [r (io/reader (get-event-stream))]
+            (with-open [r (get-event-stream)]
               (loop [events (cond->> (line-seq r) limit (take limit))]
                 (when-let [event (first events)]
                   (if (a/>!! ch (parse-json event))
@@ -93,15 +97,20 @@
 (def batch-size
   128)
 
+(def page-request-write-retry
+  (retry/init
+   {::retry/retry? (fn [_n _ms ex]
+                     (log/warnf ex "Error while writing page requests: retrying")
+                     (instance? SQLException ex))
+    ::retry/delay  (fn [n _ms _ex] (min 20000 (delay-exp 1000 n)))}))
+
 (defn write-page-requests
   [db ch]
   (a/thread
     (try
       (let [batches (a/chan 1 (comp (mapcat event->db) (partition-all batch-size)))]
         (a/pipe ch batches)
-        (dh/with-retry {:retry-on   SQLException
-                        :backoff-ms [1000 20000 2.0]
-                        :on-retry   log-retried-write}
+        (with-retry page-request-write-retry
           (with-open [c (jdbc/get-connection db)]
             (loop []
               (when-let [page-requests (a/<!! batches)]
