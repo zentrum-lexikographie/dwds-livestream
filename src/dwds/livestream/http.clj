@@ -142,6 +142,7 @@
   [broadcast-ch]
   (log/infof "Starting HTTP server @ %d/tcp" env/http-port)
   (->> {:port               env/http-port
+        :max-threads        1024
         :output-buffer-size 1024
         :join?              false}
        (ring.adapter.jetty/run-jetty (ring-handler broadcast-ch))
