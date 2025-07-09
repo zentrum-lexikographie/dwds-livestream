@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.3.6...v1.4.0) (2025-07-09)
+
+
+### Features
+
+* HTTP server uses JDK21's virtual threads ([9200ac1](https://github.com/zentrum-lexikographie/dwds-livestream/commit/9200ac1064a6068615ad98a4e346682fa846de26))
+
 ## [1.3.6](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.3.5...v1.3.6) (2025-07-08)
 
 
