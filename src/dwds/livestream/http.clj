@@ -18,8 +18,10 @@
    [taoensso.timbre :as log]
    [throttler.core :refer [throttle-chan]])
   (:import
+   (java.util.concurrent Executors)
    (org.eclipse.jetty.io EofException)
-   (org.eclipse.jetty.server Server)))
+   (org.eclipse.jetty.server Server)
+   (org.eclipse.jetty.util.thread QueuedThreadPool)))
 
 (defn proxy-headers->request
   [{:keys [headers] :as request}]
@@ -140,10 +142,13 @@
 
 (defn start-server!
   [broadcast-ch]
-  (log/infof "Starting HTTP server @ %d/tcp" env/http-port)
-  (->> {:port               env/http-port
-        :max-threads        1024
-        :output-buffer-size 1024
-        :join?              false}
-       (ring.adapter.jetty/run-jetty (ring-handler broadcast-ch))
-       (partial stop-server!)))
+  (let [thread-pool (doto (QueuedThreadPool.)
+                      (. (setVirtualThreadsExecutor
+                          (Executors/newVirtualThreadPerTaskExecutor))))]
+    (log/infof "Starting HTTP server @ %d/tcp" env/http-port)
+    (->> {:port               env/http-port
+          :thread-pool        thread-pool
+          :output-buffer-size 1024
+          :join?              false}
+         (ring.adapter.jetty/run-jetty (ring-handler broadcast-ch))
+         (partial stop-server!))))
