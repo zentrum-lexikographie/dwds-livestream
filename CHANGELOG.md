@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.4.0...v1.4.1) (2025-10-01)
+
+
+### Bug Fixes
+
+* close event channel in order to stop leaky bucket filler thread ([f90c41e](https://github.com/zentrum-lexikographie/dwds-livestream/commit/f90c41e9f7fa409209ce9173cee8b55dc16e0264))
+
 ## [1.4.0](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.3.6...v1.4.0) (2025-07-09)
 
 
