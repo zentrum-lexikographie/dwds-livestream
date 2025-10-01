@@ -90,7 +90,8 @@
             (catch Throwable t
               (log/warn t "Error while streaming WB page requests"))
             (finally
-              (a/untap broadcast-ch ch))))))))
+              (a/untap broadcast-ch ch)
+              (a/close! ch))))))))
 
 (def text-event-stream
   (partial response-stream #(str "data: " % "\n\n")))
