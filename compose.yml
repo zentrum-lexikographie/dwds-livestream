@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
   server:
-    image: docker.zdl.org/zdl/dwds-livestream:latest
+    image: ${CI_REGISTRY_IMAGE:-docker.zdl.org/zdl/dwds-livestream}:${CI_COMMIT_REF_SLUG:-latest}
     build:
       context: .
     network_mode: host
