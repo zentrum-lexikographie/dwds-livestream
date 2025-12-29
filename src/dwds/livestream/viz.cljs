@@ -15,6 +15,9 @@
 (def display-parallel
   7)
 
+(def max-lemma-length
+  25)
+
 (def show-sources?
   (str/includes? (.-search js/location) "?sources"))
 
@@ -90,6 +93,10 @@
   [{:keys [source date]}]
   (str (norm-source source) " – " (subs date 0 4)))
 
+(defn abbr
+  [s]
+  (cond-> s (< max-lemma-length (count s)) (-> (subs 0 max-lemma-length) (str "…"))))
+
 (defn render-page-request
   [{:keys [article-type lemma] :as entry}]
   (let [bbox   (.. main (node) (getBoundingClientRect))
@@ -138,7 +145,7 @@
         (.. label
             (append "tspan")
             (classed "lemma" true)
-            (text lemma))
+            (text (abbr lemma)))
         (when show-sources?
           (.. label
               (append "tspan")
