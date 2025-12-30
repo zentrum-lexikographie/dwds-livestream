@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.0](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.4.1...v1.5.0) (2025-12-30)
+
+
+### Features
+
+* abbreviate overly long lemmata ([264106d](https://github.com/zentrum-lexikographie/dwds-livestream/commit/264106d402d087be1d5968e317d533523f81b562))
+
+
+### Bug Fixes
+
+* remove unused code ([facc987](https://github.com/zentrum-lexikographie/dwds-livestream/commit/facc98723bf8cb0ea25b64151bd0c68329f06136))
+
 ## [1.4.1](https://github.com/zentrum-lexikographie/dwds-livestream/compare/v1.4.0...v1.4.1) (2025-10-01)
 
 
