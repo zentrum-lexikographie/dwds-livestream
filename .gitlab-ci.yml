@@ -18,7 +18,11 @@ build:
 deploy:
   stage: deploy
   script:
-    - docker ps
+    - docker compose -f compose.prod.yml pull
+    - docker compose -f compose.prod.yml down --remove-orphans
+    - docker compose -f compose.prod.yml up -d
   tags:
-    - whorf.bbaw.de
+    - www.dwds.de
     - shell
+  only:
+    - main

@@ -1,0 +1,13 @@
+name: dwds-livestream
+services:
+  server:
+    image: ${CI_REGISTRY_IMAGE:-dwds/livestream}:${CI_COMMIT_SHORT_SHA:-latest}
+    restart: unless-stopped
+    entrypoint: "clojure -X:server dwds.livestream.server/start!"
+    network_mode: host
+    environment:
+      - "DWDS_LIVESTREAM_HTTP_CONTEXT_PATH=/live"
+      - "DWDS_LIVESTREAM_WBDB_USER=website"
+      - "DWDS_LIVESTREAM_WBDB_PASSWORD=${DWDS_LIVESTREAM_WBDB_PASSWORD}"
+    volumes:
+      - /var/log/apache2:/log
